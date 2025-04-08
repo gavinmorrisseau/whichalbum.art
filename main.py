@@ -11,7 +11,7 @@ def get_image(songName: str) -> str:
     return image_url
 
 def get_title_from_index(index, dataset_path=PATH_TO_DATASET):
-    ''' Returns formatted title of an album from an index of the dataset.'''
+    ''' Returns formatted title of an album from an index of the dataset. '''
     file = open(dataset_path,"r",encoding="UTF-8")
     for i, line in enumerate(file):
         if i == index:
@@ -29,7 +29,7 @@ def get_random_title() -> str:
     return f'{album_title} {album_artist}'
         
 def get_random_titles() -> list:
-    ''' Finds two unique albums and returns a list of formatted outputs.'''
+    ''' Finds two unique albums and returns a list of formatted outputs. Uses get_title_from_index. '''
     output_list = list()
     index1 = random.randint(1,5000)
     index2 = random.randint(1,5000)
@@ -42,6 +42,7 @@ def get_random_titles() -> list:
 
     output_list.append(f'{album_title1} {album_artist1}')
     output_list.append(f'{album_title2} {album_artist2}')
+
     return output_list
 
 inital_albums = get_random_titles()
@@ -59,7 +60,6 @@ while album_1_photo == None or album_2_photo == None:
         inital_albums = get_random_titles()
         album_1_info = inital_albums[0]
         album_2_info = inital_albums[1]
-
 
 print(inital_albums[0])
 print(inital_albums[1])
