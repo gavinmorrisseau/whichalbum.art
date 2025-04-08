@@ -1,61 +1,67 @@
 import iGetMusic as iGet
 import random
 
-PATH_TO_FILE = "./dataset/rym_top_5000_all_time.csv"
+PATH_TO_DATASET = "./dataset/rym_top_5000_all_time.csv"
 
-def getImage(songName: str) -> str:
-    song = iGet.get(term=songName, country="CA", explicit=True)
-    imageURL = song[0].getImage()
-    imageURL = iGet.resizeImage(imageURL,1000)
-    return imageURL
+def get_image(songName: str) -> str:
+    ''' Returns album's cover using iGetMusic with search query of title and artist. '''
+    song = iGet.get(term=songName, country="US", explicit=True)
+    image_url = song[0].getImage()
+    image_url = iGet.resizeImage(image_url,1000)
+    return image_url
 
-
-def getTitleFromIndex(index):
-    file = open(PATH_TO_FILE,"r",encoding="UTF-8")
+def get_title_from_index(index, dataset_path=PATH_TO_DATASET):
+    ''' Returns formatted title of an album from an index of the dataset.'''
+    file = open(dataset_path,"r",encoding="UTF-8")
     for i, line in enumerate(file):
         if i == index:
             return line
         elif i > index:
             break
     file.close()
+
     return str()
 
-def getRandomAlbumTitle() -> str:
+def get_random_title() -> str:
+    ''' Returns album's info. Uses get_title_from_index. '''
     index = random.randint(1,5000)
-    _, album_title, album_artist, *_ = getTitleFromIndex(index).split(",")
-    print(f'randomTitle() returns: {album_title} {album_artist}')
+    _, album_title, album_artist, *_ = get_title_from_index(index).split(",")
     return f'{album_title} {album_artist}'
         
-def getRandomAlbumTitles() -> list:
-    outputList = list()
+def get_random_titles() -> list:
+    ''' Finds two unique albums and returns a list of formatted outputs.'''
+    output_list = list()
     index1 = random.randint(1,5000)
     index2 = random.randint(1,5000)
     
     while index1 == index2:
         index2 = random.randint(1,5000)
 
-    _, album_title1, album_artist1, *_ = getTitleFromIndex(index1).split(",")
-    _, album_title2, album_artist2, *_ = getTitleFromIndex(index2).split(",")
+    _, album_title1, album_artist1, *_ = get_title_from_index(index1).split(",")
+    _, album_title2, album_artist2, *_ = get_title_from_index(index2).split(",")
 
-    outputList.append(f'{album_title1} {album_artist1}')
-    outputList.append(f'{album_title2} {album_artist2}')
-    return outputList
+    output_list.append(f'{album_title1} {album_artist1}')
+    output_list.append(f'{album_title2} {album_artist2}')
+    return output_list
 
-initialAlbums = getRandomAlbumTitles()
+inital_albums = get_random_titles()
+album_1_info = inital_albums[0]
+album_2_info = inital_albums[1]
+album_1_photo = None
+album_2_photo = None
 
-
-album1 = None
-album2 = None
-
-while album1 == None or album2 == None:
+while album_1_photo == None or album_2_photo == None:
     try:
-        album1 = getImage(initialAlbums[0])
-        album2 = getImage(initialAlbums[1])
+        album_1_photo = get_image(inital_albums[0])
+        album_2_photo = get_image(inital_albums[1])
     except Exception as e:
-        print(f'Error retrieving image for {initialAlbums[0]}: {e}')
-        initialAlbums = getRandomAlbumTitles()
+        print(f'Error retrieving image: {e}')
+        inital_albums = get_random_titles()
+        album_1_info = inital_albums[0]
+        album_2_info = inital_albums[1]
 
-print(initialAlbums[0])
-print(initialAlbums[1])
-print(album1)
-print(album2)
+
+print(inital_albums[0])
+print(inital_albums[1])
+print(album_1_photo)
+print(album_2_photo)
