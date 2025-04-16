@@ -1,5 +1,6 @@
 import iGetMusic as iGet
 import random
+import json
 
 PATH_TO_DATASET = "./dataset/rym_top_5000_all_time.csv"
 
@@ -49,24 +50,25 @@ def get_random_titles() -> list:
 
     return output_list
 
+def main() -> list:
+    inital_albums = get_random_titles()
+    album_1_info = inital_albums[0]
+    album_2_info = inital_albums[1]
+    album_1_photo = None
+    album_2_photo = None
 
-inital_albums = get_random_titles()
-album_1_info = inital_albums[0]
-album_2_info = inital_albums[1]
-album_1_photo = None
-album_2_photo = None
+    while album_1_photo is None or album_2_photo is None:
+        try:
+            album_1_photo = get_image(inital_albums[0])
+            album_2_photo = get_image(inital_albums[1])
+        except Exception as e:
+            print(f"Error retrieving image: {e}")
+            inital_albums = get_random_titles()
+            album_1_info = inital_albums[0]
+            album_2_info = inital_albums[1]
+    output = album_1_photo + "\n" + album_2_photo
+    return output
 
-while album_1_photo == None or album_2_photo == None:
-    try:
-        album_1_photo = get_image(inital_albums[0])
-        album_2_photo = get_image(inital_albums[1])
-    except Exception as e:
-        print(f"Error retrieving image: {e}")
-        inital_albums = get_random_titles()
-        album_1_info = inital_albums[0]
-        album_2_info = inital_albums[1]
-
-print(inital_albums[0])
-print(inital_albums[1])
-print(album_1_photo)
-print(album_2_photo)
+if __name__ == "__main__":
+    print(main())
+    # Print output is expected for subprocess

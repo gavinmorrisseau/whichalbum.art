@@ -3,5 +3,5 @@ from . import views
 
 # URLConf
 urlpatterns = [
-    #path('app/',views.test)
+    path('', views.main_page, name='main_page'),  # Root URL
 ]
