@@ -1,16 +1,26 @@
-import iGetMusic as iGet
 import random
 import json
-
-IMAGE_WIDTH = 1000
-PATH_TO_DATASET = "./dataset/rym_top_5000_all_time.csv"
+import musicbrainzngs as mb
+mb.set_useragent("whichalbum.art", "0.1", "https://github.com/gavinmorrisseau/whichalbum.art")
+IMAGE_WIDTH = 600
+PATH_TO_DATASET = "./files/rym_top_5000_all_time.csv"
 
 def get_image(query: str) -> str:
     """Returns album's cover using iGetMusic with search query of title and artist."""
-    song = iGet.get(term=query, country="US", explicit=True)
-    image_url = song[0].getImage()
-    image_url = iGet.resizeImage(image_url, IMAGE_WIDTH)
-    return image_url
+    result = mb.search_release_groups(query, limit=1, type='album')
+    # print(result)
+    MBID = result['release-group-list'][0]['release-list'][0]['id']
+    # print(MBID)
+    image_list = mb.get_image_list(MBID)
+    image_URL = image_list['images'][0]['image']
+    return image_URL
+
+
+
+    # song = iGet.get(term=query, country="US", explicit=True)
+    # image_url = song[0].getImage()
+    # image_url = iGet.resizeImage(image_url, IMAGE_WIDTH)
+    # return image_url
 
 def get_album_from_index(index, dataset_path=PATH_TO_DATASET) -> dict:
     """Returns formatted title of an album from an index of the dataset."""
@@ -23,11 +33,11 @@ def get_album_from_index(index, dataset_path=PATH_TO_DATASET) -> dict:
             output['title'] = title
             output['artist'] = artist
             output['date'] = date
-            output['genre'] = genre
+            output['genre'] = genre.replace("\"","")
             return output
         elif i > index:
             break
-    return 'Error in: get_title_from_index()!'
+    #return 'Error in: get_title_from_index()!'
 
 def get_random_album(exclude_index=None) -> dict:
     """Returns album's info. Uses get_title_from_index."""
@@ -64,8 +74,7 @@ def main():
         try:
             album1_photo_link = get_image(f'{album1['title']} {album1['artist']}')
             album2_photo_link = get_image(f'{album2['title']} {album2['artist']}')
-        except Exception as e:
-            #print(f"Error retrieving image: {e}")
+        except Exception:
             album1, album2 = get_random_albums()
             album1_photo_link = None
             album2_photo_link = None
