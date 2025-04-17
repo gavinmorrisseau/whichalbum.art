@@ -3,33 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Main Page</title>
+    <title>whichalbum.art</title>
+    <link rel="icon" href="../../files/favicon.ico" type="image/x-icon">
+
     <style>
+        a {
+            color:#FFFFFF;
+            text-decoration: none;
+        }
+        body {
+            background-color: #141214;
+        }
+        .nav_bar {
+            background-color: #141214;
+            font-family: 'Courier New', Courier, monospace;
+            color: #FFFFFF;
+            text-align: right;
+            font-size: 16px;
+            text-decoration: none;
+        }
         .container {
+            font-family: 'Courier New', Courier, monospace;
+            text-align: center;
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 20px;
             margin-top: 50px;
+            color: #FFFFFF;
+            line-height: 6px;
         }
-        .image-box {
-            text-align: center;
+        .album1_box, .album2_box {
+            max-width: 50%;
         }
-        .image-box img {
-            max-width: 300px;
-            height: auto;
+        .album1_box img, .album2_box img {
+            height: 500px;
+            width: 500px;
+            object-fit: contain;
         }
     </style>
 </head>
 <body>
+    <div class="nav_bar">
+        <p><b>whichalbum.art // <a href="https://www.github.com/gavinmorrisseau/" target="_blank">by gavin m.</a></b></p>
+    </div>
     <div class="container">
-        <div class="image-box">
+        <div class="album1_box">
             <img src="{{album1_link}}" alt="Album 1 Image">
-            <p>{{album1_title}} | {{album1_artist}}</p>
+            <p>{{album1_title}}</p>
+            <p>{{album1_artist}}</p>
+            <p>{{album1_date}}</p>
+            <p>{{album1_genre}}</p>
         </div>
-        <div class="image-box">
+        <div class="album2_box">
             <img src="{{album2_link}}" alt="Album 2 Image">
-            <p>{{album2_title}} | {{album2_artist}}</p>
+            <p>{{album2_title}}</p>
+            <p>{{album2_artist}}</p>
+            <p>{{album2_date}}</p>
+            <p>{{album2_genre}}</p>
         </div>
     </div>
 </body>
